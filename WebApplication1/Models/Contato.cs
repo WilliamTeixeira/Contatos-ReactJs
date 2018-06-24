@@ -11,10 +11,7 @@ namespace WebApplication1.Models
         public string Nome { get; set; }
         public string Email { get; set; }
         public String Telefone { get; set; }
-        public List<string> Telefones { get => Telefones; set => Telefones = value; }
-
-        private List<string> telefones;
-
+        
         public override string ToString()
         {
             return this.Nome;
