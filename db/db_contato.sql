@@ -30,7 +30,7 @@ CREATE TABLE `contato` (
   `email` varchar(45) DEFAULT NULL,
   `telefone` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,8 +39,33 @@ CREATE TABLE `contato` (
 
 LOCK TABLES `contato` WRITE;
 /*!40000 ALTER TABLE `contato` DISABLE KEYS */;
-INSERT INTO `contato` VALUES (1,'William','tx@gmail.com','988567684'),(2,'Hugo','hugo@email.com','999966998');
+INSERT INTO `contato` VALUES (6,'William','tx@gmail.co',NULL),(8,'Camillo','camillo@email.com',NULL),(12,'Hugo','hugo@email.com',NULL);
 /*!40000 ALTER TABLE `contato` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `telefone`
+--
+
+DROP TABLE IF EXISTS `telefone`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `telefone` (
+  `idtel` int(11) NOT NULL AUTO_INCREMENT,
+  `idcontato` varchar(45) NOT NULL,
+  `numero` varchar(45) NOT NULL,
+  PRIMARY KEY (`idtel`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `telefone`
+--
+
+LOCK TABLES `telefone` WRITE;
+/*!40000 ALTER TABLE `telefone` DISABLE KEYS */;
+INSERT INTO `telefone` VALUES (10,'6','988567684'),(23,'8','1111111'),(27,'8','988567684'),(28,'12','988567684');
+/*!40000 ALTER TABLE `telefone` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +77,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-24 17:31:49
+-- Dump completed on 2018-06-28 21:37:40

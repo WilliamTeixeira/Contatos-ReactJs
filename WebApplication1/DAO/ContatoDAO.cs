@@ -12,28 +12,37 @@ namespace WebApplication1.DAO
     {
         public void Inserir(Contato obj)
         {
-            string sql = "INSERT INTO contato (nome ,email, telefone) VALUES (@nome ,@email, @telefone);";
+            string sql = "INSERT INTO contato (nome ,email) VALUES (@nome ,@email);";
 
             MySqlCommand cmd = new MySqlCommand(sql);
 
             cmd.Parameters.Add(new MySqlParameter("@nome", obj.Nome));
             cmd.Parameters.Add(new MySqlParameter("@email", obj.Email));
-            cmd.Parameters.Add(new MySqlParameter("@telefone", obj.Telefone));
 
             ExecutarComando(cmd);
+
+            obj.Id = LastIdContato(); //id -1 significa que houve um erro ao incluir então não inclui o tel
+            if (obj.Telefone != null && obj.Id != -1)
+            {
+                var novoTel = new Telefone { IdContato = obj.Id, Numero = obj.Telefone };
+                new TelefoneDAO().Inserir(novoTel);
+                obj.Telefones = obj.Telefones.Append(novoTel);
+            }
         }
 
         public void Alterar(Contato obj)
         {
-            string sql = "UPDATE contato SET nome = @nome, email = @email, telefone = @telefone WHERE id = @id;";
+            string sql = "UPDATE contato SET nome = @nome, email = @email WHERE id = @id;";
 
             MySqlCommand cmd = new MySqlCommand(sql);
             cmd.Parameters.Add(new MySqlParameter("@id", obj.Id));
             cmd.Parameters.Add(new MySqlParameter("@nome", obj.Nome));
             cmd.Parameters.Add(new MySqlParameter("@email", obj.Email));
-            cmd.Parameters.Add(new MySqlParameter("@telefone", obj.Telefone));
 
             ExecutarComando(cmd);
+
+            if (obj.Telefone != null)
+                new TelefoneDAO().Inserir(new Telefone { IdContato = obj.Id, Numero = obj.Telefone });
         }
 
         public void Excluir(Contato obj)
@@ -45,6 +54,8 @@ namespace WebApplication1.DAO
             cmd.Parameters.Add(new MySqlParameter("@id", obj.Id));
 
             ExecutarComando(cmd);
+
+            new TelefoneDAO().ExcluirPorContato(obj.Id);
         }
 
         public Contato RetornarPorId(int id)
@@ -80,6 +91,18 @@ namespace WebApplication1.DAO
             return objs;
         }
 
+        private int LastIdContato()
+        {
+            string sql = "select last_insert_id() as id;";
+            MySqlCommand cmd = new MySqlCommand(sql);
+            DataSet ds = RetornarDataSet(cmd);
+
+            if (ds.Tables[0].Rows.Count == 0)
+                return -1;
+            else
+                return Convert.ToInt32(ds.Tables[0].Rows[0]["id"]);
+
+        }
         private Contato RetornarObj(DataRow reg)
         {
             Contato obj = new Contato();
@@ -88,6 +111,8 @@ namespace WebApplication1.DAO
             obj.Nome = reg["nome"].ToString();
             obj.Email = reg["email"].ToString();
             obj.Telefone = reg["telefone"].ToString();
+
+            obj.Telefones = new TelefoneDAO().RetornarTodos(obj.Id);
 
             return obj;
         }

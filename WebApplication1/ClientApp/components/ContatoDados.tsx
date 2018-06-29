@@ -30,12 +30,25 @@ export class ContatoDados extends React.Component<RouteComponentProps<{}>, Conta
         if (this.state.carregando == false) {
             contents = this.renderContatosTable(this.state.contatos);
 
-            if (this.state.apresentando)
-                modal = <ContatoVisualizar id={this.state.idSelecionado} metodoVoltar={this.voltarParaLista} />
-            else if (this.state.incluindo)
-                modal = <ContatoForm id={0} metodoAtualizarLista={this.atualizarLista} metodoVoltar={this.voltarParaLista} incluindo={true}/>
-            else if (this.state.alterando)
-                modal = <ContatoForm id={this.state.idSelecionado} metodoAtualizarLista={this.atualizarLista} metodoVoltar={this.voltarParaLista} incluindo={false}/>
+            if (this.state.apresentando) {
+                modal = <ContatoVisualizar
+                    id={this.state.idSelecionado}
+                    metodoVoltar={this.voltarParaLista} />
+            }
+            else if (this.state.incluindo) {
+                modal = <ContatoForm
+                    id={0}
+                    metodoAtualizarLista={this.atualizarLista}
+                    metodoVoltar={this.voltarParaLista}
+                    incluindo={true} />
+            }
+            else if (this.state.alterando) { 
+                modal = <ContatoForm
+                    id={this.state.idSelecionado}
+                    metodoAtualizarLista={this.atualizarLista}
+                    metodoVoltar={this.voltarParaLista}
+                    incluindo={false} />
+            }
         }
 
         return <div>
@@ -43,7 +56,6 @@ export class ContatoDados extends React.Component<RouteComponentProps<{}>, Conta
             {contents}
             <div className="modal fade" id="myModal" role="dialog">
                 <div className="modal-dialog">
-
                     <div className="modal-content">
                         <div className="modal-header">
                             <button type="button" className="close" data-dismiss="modal">&times;</button>
@@ -53,7 +65,6 @@ export class ContatoDados extends React.Component<RouteComponentProps<{}>, Conta
                             {modal}
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -61,15 +72,20 @@ export class ContatoDados extends React.Component<RouteComponentProps<{}>, Conta
     }
 
     private visualizar(id: number) {
-        this.setState({ idSelecionado: id, apresentando: true });
+        this.setState({
+            idSelecionado: id, apresentando: true, incluindo: false, carregando: false, alterando: false
+        });
     }
 
     private incluir() {
-        this.setState({ carregando: false, incluindo: true });
+        this.setState({
+            carregando: false, apresentando: false, alterando: false, incluindo: true
+        });
     }
 
     private alterar(id: number) {
-        this.setState({ idSelecionado: id, alterando: true });
+        this.setState({ carregando: false, apresentando: false, incluindo: false, idSelecionado: id, alterando: true
+        });
     }
 
     private atualizarLista() {
@@ -81,7 +97,8 @@ export class ContatoDados extends React.Component<RouteComponentProps<{}>, Conta
     }
 
     private voltarParaLista() {
-        this.setState({ carregando: false, apresentando: false, incluindo: false, alterando: false });
+        this.atualizarLista();
+        //this.setState({ carregando: false, apresentando: false, incluindo: false, alterando: false });
     }
 
     private gravarExclusao(id: number)
@@ -118,7 +135,6 @@ export class ContatoDados extends React.Component<RouteComponentProps<{}>, Conta
                         <th>Id</th>
                         <th>Nome</th>
                         <th>Email</th>
-                        <th>Telefone</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -128,7 +144,6 @@ export class ContatoDados extends React.Component<RouteComponentProps<{}>, Conta
                             <td>{c.id}</td>
                             <td>{c.nome}</td>
                             <td>{c.email}</td>
-                            <td>{c.telefone}</td>
                             <td>
                                 <button className="action btn btn-info" data-toggle="modal" data-target="#myModal" onClick={(id) => this.visualizar(c.id)}>Visualizar</button>
                                 &nbsp;
@@ -150,4 +165,10 @@ class Contato {
     nome: string;
     email: string;
     telefone: string;
+    telefones: Telefone[];
+}
+class Telefone {
+    id: number;
+    idContato: number;
+    numero: string;
 }

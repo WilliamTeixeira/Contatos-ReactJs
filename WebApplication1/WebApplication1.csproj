@@ -10,7 +10,6 @@
   <ItemGroup>
     <None Remove="ClientApp\components\ContatoDados.tsx" />
     <None Remove="ClientApp\components\ContatoVisualizar.tsx" />
-    <None Remove="ClientApp\components\Modal.tsx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,7 +25,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\components\ContatoVisualizar.tsx" />
     <TypeScriptCompile Include="ClientApp\components\ContatoDados.tsx" />
-    <TypeScriptCompile Include="ClientApp\components\Modal.tsx" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

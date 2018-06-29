@@ -41,10 +41,12 @@ namespace WebApplication1.Controllers
 
         // POST: api/Contato
         [HttpPost]
-        public void Post([FromBody]Contato obj)
+        public Contato Post([FromBody]Contato obj)
         {
             new ContatoDAO().Inserir(obj);
             //contatos.Add(obj);
+
+            return obj;
         }
 
         // PUT: api/Contato/5
@@ -63,6 +65,13 @@ namespace WebApplication1.Controllers
             new ContatoDAO().Excluir(new Contato() { Id = id });
             //contatos.Remove(GetContact(id));
         }
-
+        
+        // DELETE: api/ApiWithActions/5/1
+        [HttpDelete("{id}/{idtel}")]
+        public void DeleteContato(int idtel)
+        {
+            new TelefoneDAO().Excluir(new Telefone { Id = idtel });
+            //contatos.Remove(GetContact(id));
+        }
     }
 }

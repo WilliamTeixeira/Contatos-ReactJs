@@ -58,15 +58,31 @@ export class ContatoVisualizar extends React.Component<ContatoProps, ContatoStat
                     <label>Email</label>
                     <input id='email' readOnly className="form-control" name='email' type='text' defaultValue={obj.email != null ? (obj.email + '') : ''} />
                 </div>
-                <div className="form-group">
-                    <label>Telefone</label>
-                    <input id='telefone' readOnly className="form-control" name='telefone' type='text' defaultValue={obj.telefone != null ? (obj.telefone + '') : ''} />
-                </div>
             </form>
+            <div>
+                <hr />
+                <table className='table'>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Telefones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {obj.telefones.map(t =>
+                            <tr key={t.id}>
+                                <td>{t.id}</td>
+                                <td>{t.numero}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
             <div className="modal-footer">
                 <button type="button" className="btn btn-light" data-dismiss="modal"  onClick={() => this.props.metodoVoltar()}>Voltar</button>
             </div>
-        </div>;
+        </div>
+            ;
     }
 }
 
@@ -75,4 +91,10 @@ class Contato {
     nome: string;
     email: string;
     telefone: string;
+    telefones: Telefone[];
+}
+class Telefone {
+    id: number
+    idContato: number;
+    numero: string;
 }

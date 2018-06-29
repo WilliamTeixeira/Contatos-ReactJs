@@ -100,12 +100,7 @@ namespace WebApplication1.DAO
                          "Uid=root; " +
                          "Pwd=root; " +
                          "SslMode = None; ";
-
-            /* return "SERVER=localhost; " +
-                      "DATABASE=db_contato; " +
-                      "UID=root; " +
-                      "PASSWORD=root;";
-                      */
+            
             return con;
         }
     }
